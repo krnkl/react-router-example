@@ -2,7 +2,8 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Route,
-  NavLink as Link
+  NavLink as Link,
+  Switch
 } from "react-router-dom";
 import { render } from "react-dom";
 
@@ -48,12 +49,15 @@ const App = () => (
   <Router>
     <div>
       <Links />
-      <Route
-        exact
-        path="/:page(!components)?"
-        render={({ match }) => <Page>{match.params.page || "home"}</Page>}
-      />
-      <Route path="/components" component={Comp} />
+      <Switch>
+        <Route
+          exact
+          path="/:page(!components)?"
+          render={({ match }) => <Page>{match.params.page || "home"}</Page>}
+        />
+        <Route path="/components" component={Comp} />
+        <Route render={() => <h2>PageNotFound</h2>} />
+      </Switch>
     </div>
   </Router>
 );
