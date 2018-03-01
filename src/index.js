@@ -14,8 +14,8 @@ const isActiveFunc = (match, location) => {
   console.log(match, location);
   return match;
 };
-const Page = ({ children, match }) => {
-  console.log(`${children} match:`, match);
+const Page = ({ children }) => {
+  console.log(`${children} match:`);
   return <h1>{children}</h1>;
 };
 
@@ -31,17 +31,29 @@ const Links = () => (
       Contact
     </Link>
     {"  "}
+    <Link to="/components?id=component-one">Component1</Link>
   </nav>
 );
-
+const Comp = ({ match, location }) => {
+  console.log("Component match", match);
+  return (
+    <div>
+      <h2>Component {}</h2>
+      <p>{JSON.stringify(location)}</p>
+      <p>{new URLSearchParams(location.search).get("id")}</p>
+    </div>
+  );
+};
 const App = () => (
   <Router>
     <div>
       <Links />
       <Route
-        path="/:page?"
+        exact
+        path="/:page(!components)?"
         render={({ match }) => <Page>{match.params.page || "home"}</Page>}
       />
+      <Route path="/components" component={Comp} />
     </div>
   </Router>
 );
