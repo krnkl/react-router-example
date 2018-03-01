@@ -1,28 +1,49 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  NavLink as Link
+} from "react-router-dom";
 import { render } from "react-dom";
 
 const styles = {
   fontFamily: "anonymous-pro",
   textAlign: "center"
 };
-
-const Home = props => {
-  console.log(props);
-  return <h1>Hello</h1>;
+const isActiveFunc = (match, location) => {
+  console.log(match, location);
+  return match;
 };
+const Page = ({ children, match }) => {
+  console.log(`${children} match:`, match);
+  return <h1>{children}</h1>;
+};
+
+const Links = () => (
+  <nav>
+    <Link exact activeClassName="active" to="/">
+      Home
+    </Link>
+    {"  "}
+    <Link to={{ pathname: "/about" }}>About</Link>
+    {"  "}
+    <Link isActive={isActiveFunc} activeClassName="active" to="/contact">
+      Contact
+    </Link>
+    {"  "}
+  </nav>
+);
+
 const App = () => (
   <Router>
     <div>
-      <Route exact path="/" component={Home} />
-      <Route path="/about" render={() => <h1>About</h1>} />
+      <Links />
+      <Route
+        path="/:page?"
+        render={({ match }) => <Page>{match.params.page || "home"}</Page>}
+      />
     </div>
   </Router>
 );
 
 render(<App />, document.getElementById("root"));
-
-// <div style={styles}>
-//   <Hello name="CodeSandbox" />
-//   <h2>Start editing to see some magic happen {"\u2728"}</h2>
-// </div>
