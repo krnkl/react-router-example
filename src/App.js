@@ -15,12 +15,16 @@ const Header = ({ children }) => (
         <h1>Title: {children}</h1>
     </div>);
 
+Header.propTypes = { children: PropTypes.object.isRequired };
+
 const Content = ({ children }) => (
     <div className="content">
         <p>Content: {children}</p>
     </div>);
 
-const Page = ({children}) => (
+Content.propTypes = { children: PropTypes.object.isRequired };
+
+const Page = ({ children }) => (
     <div>
         <Header >{children}</Header>
         <Content>{children}</Content>
@@ -40,29 +44,41 @@ const Links = () => (
       Contact
     </Link>
     {"  "}
-    <Link to="/components?id=component-one">Component1</Link>
+    <Link isActive={isActiveFunc} activeClassName="active" to="/menu">
+      Menu
+    </Link>
   </nav>
 );
 
 
 Links.propTypes = { location: PropTypes.element.isRequired };
 
-const Comp = ({ location }) => (
+const Menu = () => (
+    <div>
+        <Header>Menu</Header>
+        <Link to="/menu/menu-item-one">Appetizer</Link>
+        <Link to="/menu/menu-item-two">Main course</Link>
+    <Route
+        path="/menu/:menuitem"
+        render={({ match }) => <MenuItem>{match.params.menuitem}</MenuItem>}
+    />
+    </div>
+);
+
+const MenuItem = ({ children }) => (
     <div className="content">
-      <h2>Component {}</h2>
-      <p>{JSON.stringify(location)}</p>
-      <p>{new URLSearchParams(location.search).get("id")}</p>
+        <p>{children}</p>
     </div>
   );
 
-Comp.propTypes = { location: PropTypes.element.isRequired };
+MenuItem.propTypes = { children: PropTypes.element.isRequired };
 
 const App = () => (
   <Router>
     <div>
       <Links />
       <Switch>
-        <Route path="/components" component={Comp} />
+        <Route path="/menu" component={Menu} />
         <Route
           exact
           path="/:page?"
