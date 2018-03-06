@@ -10,7 +10,21 @@ import {
 import "./App.css";
 
 const isActiveFunc = (match) => (match);
-const Page = ({ children }) => (<h1 className="header">{children}</h1>);
+const Header = ({ children }) => (
+    <div className="header">
+        <h1>Title: {children}</h1>
+    </div>);
+
+const Content = ({ children }) => (
+    <div className="content">
+        <p>Content: {children}</p>
+    </div>);
+
+const Page = ({children}) => (
+    <div>
+        <Header >{children}</Header>
+        <Content>{children}</Content>
+    </div>);
 
 Page.propTypes = { children: PropTypes.object.isRequired };
 
